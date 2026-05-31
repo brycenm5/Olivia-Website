@@ -1,0 +1,206 @@
+import React, { useState } from 'react';
+import { 
+  LayoutDashboard, BookOpen, Mic2, Baby, Stethoscope, 
+  Brain, ClipboardCheck, GraduationCap, Flame, Target, 
+  ChevronRight, Play, Star, BookMarked, Settings, Heart
+} from 'lucide-react';
+
+// --- THEME & STYLES ---
+const styles = {
+  glass: "backdrop-blur-xl bg-white/70 border border-white/20 shadow-xl rounded-3xl",
+  navItem: "flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 cursor-pointer hover:bg-white/50",
+  activeNav: "bg-indigo-500 text-white shadow-lg shadow-indigo-200",
+  card: "p-6 backdrop-blur-md bg-white/40 border border-white/40 rounded-3xl hover:transform hover:scale-[1.02] transition-all",
+};
+
+export default function VocalisApp() {
+  const [activeTab, setActiveTab] = useState('dashboard');
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-rose-50 via-indigo-50 to-teal-50 text-slate-800 font-sans">
+      
+      {/* SIDEBAR */}
+      <nav className="fixed left-6 top-6 bottom-6 w-72 backdrop-blur-2xl bg-white/30 border border-white/40 rounded-[40px] p-8 flex flex-col shadow-2xl z-50">
+        <div className="flex items-center gap-3 mb-12 px-2">
+          <div className="w-10 h-10 bg-indigo-600 rounded-2xl flex items-center justify-center shadow-indigo-300 shadow-lg">
+            <Mic2 className="text-white" size={24} />
+          </div>
+          <h1 className="text-2xl font-bold tracking-tight text-indigo-900">Vocalis<span className="text-indigo-500">Elite</span></h1>
+        </div>
+
+        <div className="space-y-2 flex-1">
+          <NavItem icon={<LayoutDashboard size={20}/>} label="Dashboard" active={activeTab === 'dashboard'} onClick={() => setActiveTab('dashboard')} />
+          <NavItem icon={<Mic2 size={20}/>} label="Phonetics Lab" active={activeTab === 'phonetics'} onClick={() => setActiveTab('phonetics')} />
+          <NavItem icon={<Baby size={20}/>} label="Pediatric Center" active={activeTab === 'pediatric'} onClick={() => setActiveTab('pediatric')} />
+          <NavItem icon={<Stethoscope size={20}/>} label="Clinical Rotations" active={activeTab === 'clinical'} onClick={() => setActiveTab('clinical')} />
+          <NavItem icon={<GraduationCap size={20}/>} label="Praxis Prep" active={activeTab === 'praxis'} onClick={() => setActiveTab('praxis')} />
+          <NavItem icon={<Brain size={20}/>} label="Case Studies" active={activeTab === 'cases'} onClick={() => setActiveTab('cases')} />
+        </div>
+
+        <div className="mt-auto pt-6 border-t border-white/20">
+          <div className="flex items-center gap-3 p-4 bg-white/40 rounded-2xl border border-white/40">
+            <div className="w-10 h-10 rounded-full bg-rose-200 flex items-center justify-center text-rose-600 font-bold">SLP</div>
+            <div>
+              <p className="text-sm font-bold text-indigo-900 underline">Future CCC-SLP</p>
+              <p className="text-xs text-indigo-500">MUSC Class of 2026</p>
+            </div>
+          </div>
+        </div>
+      </nav>
+
+      {/* MAIN CONTENT AREA */}
+      <main className="ml-80 p-12 max-w-7xl">
+        
+        {/* HEADER */}
+        <header className="flex justify-between items-center mb-12">
+          <div>
+            <h2 className="text-4xl font-bold text-slate-800 mb-2">Welcome back, Future SLP! ✨</h2>
+            <p className="text-slate-500">You're 82% of the way to mastering Pediatric Swallowing.</p>
+          </div>
+          <div className="flex gap-4">
+             <div className="flex items-center gap-2 px-6 py-3 bg-white/50 rounded-2xl border border-white/40 shadow-sm">
+                <Flame className="text-orange-500" />
+                <span className="font-bold">14 Day Streak</span>
+             </div>
+          </div>
+        </header>
+
+        {activeTab === 'dashboard' && <Dashboard />}
+        {activeTab === 'phonetics' && <PhoneticsLab />}
+        {activeTab === 'pediatric' && <PediatricCenter />}
+
+      </main>
+
+      {/* DECORATIVE BACKGROUND ELEMENTS */}
+      <div className="fixed top-[-10%] right-[-10%] w-[500px] h-[500px] bg-indigo-200/30 rounded-full blur-[120px] -z-10" />
+      <div className="fixed bottom-[-10%] left-[20%] w-[400px] h-[400px] bg-rose-200/30 rounded-full blur-[120px] -z-10" />
+    </div>
+  );
+}
+
+// --- SUB-COMPONENTS ---
+
+function NavItem({ icon, label, active, onClick }) {
+  return (
+    <div onClick={onClick} className={`${styles.navItem} ${active ? styles.activeNav : "text-slate-500 hover:text-indigo-600"}`}>
+      {icon}
+      <span className="font-semibold">{label}</span>
+    </div>
+  );
+}
+
+function Dashboard() {
+  return (
+    <div className="grid grid-cols-3 gap-8">
+      {/* TODAY'S FOCUS */}
+      <div className={`${styles.glass} col-span-2 p-8`}>
+        <div className="flex justify-between items-center mb-8">
+          <h3 className="text-2xl font-bold flex items-center gap-2"><Target className="text-indigo-500" /> Today's Focus</h3>
+          <span className="text-sm text-indigo-600 font-semibold cursor-pointer">View Schedule</span>
+        </div>
+        <div className="space-y-4">
+          <FocusTask title="Narrow Transcription Practice" sub="Articulation & Phonology" time="15 mins" color="bg-blue-500" />
+          <FocusTask title="Birth-to-3 Milestones" sub="Childhood Language" time="20 mins" color="bg-purple-500" />
+          <FocusTask title="Cleft Palate Assessment" sub="Craniofacial Anomalies" time="30 mins" color="bg-rose-500" />
+        </div>
+      </div>
+
+      {/* QUICK STATS */}
+      <div className="space-y-6">
+        <StatCard label="Knowledge Mastery" value="74%" color="text-teal-600" />
+        <StatCard label="Flashcards Due" value="128" color="text-orange-600" />
+        <div className={`${styles.card} bg-indigo-600 text-white`}>
+          <Heart className="mb-4 text-rose-300 fill-rose-300" />
+          <p className="font-medium italic text-indigo-50">"You are going to be an incredible SLP. One step at a time."</p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function FocusTask({ title, sub, time, color }) {
+  return (
+    <div className="flex items-center justify-between p-5 bg-white/60 rounded-2xl border border-white/40 hover:bg-white/80 transition-all cursor-pointer group">
+      <div className="flex items-center gap-4">
+        <div className={`w-3 h-12 rounded-full ${color}`} />
+        <div>
+          <h4 className="font-bold text-slate-800 group-hover:text-indigo-600 transition-colors">{title}</h4>
+          <p className="text-sm text-slate-500">{sub}</p>
+        </div>
+      </div>
+      <div className="flex items-center gap-3">
+        <span className="text-xs font-bold text-slate-400 bg-slate-100 px-3 py-1 rounded-full">{time}</span>
+        <div className="w-10 h-10 rounded-full bg-indigo-50 flex items-center justify-center text-indigo-600">
+          <Play size={18} fill="currentColor" />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function StatCard({ label, value, color }) {
+  return (
+    <div className={`${styles.glass} p-6 flex justify-between items-center`}>
+      <span className="font-bold text-slate-500">{label}</span>
+      <span className={`text-3xl font-black ${color}`}>{value}</span>
+    </div>
+  );
+}
+
+function PhoneticsLab() {
+  const phonemes = ['p', 'b', 't', 'd', 'k', 'g', 'm', 'n', 'ŋ', 'f', 'v', 'θ', 'ð', 's', 'z', 'ʃ', 'ʒ'];
+  return (
+    <div className={`${styles.glass} p-10`}>
+      <h3 className="text-3xl font-bold mb-2 text-indigo-900">IPA Mastery Lab</h3>
+      <p className="text-slate-500 mb-8">Select a phoneme to visualize placement and hear articulation.</p>
+      
+      <div className="grid grid-cols-6 gap-4">
+        {phonemes.map(p => (
+          <div key={p} className="h-20 bg-white/50 rounded-2xl border-2 border-transparent hover:border-indigo-400 hover:bg-white flex items-center justify-center text-2xl font-serif font-bold text-indigo-700 cursor-pointer shadow-sm transition-all">
+            /{p}/
+          </div>
+        ))}
+      </div>
+
+      <div className="mt-12 p-8 bg-indigo-900 rounded-[32px] text-white flex items-center gap-12">
+        <div className="w-48 h-48 bg-white/10 rounded-full border-4 border-white/20 flex items-center justify-center">
+           <Mic2 size={64} className="text-indigo-200" />
+        </div>
+        <div>
+          <span className="bg-indigo-500 text-[10px] uppercase tracking-widest font-black px-3 py-1 rounded-full">New Challenge</span>
+          <h4 className="text-2xl font-bold mt-2">Sound Detective: Narrow Transcription</h4>
+          <p className="text-indigo-200 mb-6 max-w-md">Listen to a 4-year-old with a lateral lisp and transcribe the utterance using narrow transcription.</p>
+          <button className="px-8 py-3 bg-white text-indigo-900 font-bold rounded-xl hover:bg-indigo-50 transition-colors">Start Practice</button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function PediatricCenter() {
+  const milestones = [
+    { age: '12m', skill: 'First words appear, follows simple commands.' },
+    { age: '18m', skill: '10-20 word vocabulary, points to body parts.' },
+    { age: '24m', skill: '50+ words, 2-word combinations (Pivot-Open).' },
+    { age: '36m', skill: '3-word sentences, 75% intelligible to strangers.' }
+  ];
+
+  return (
+    <div className="grid grid-cols-1 gap-8">
+      <div className={`${styles.glass} p-10`}>
+        <h3 className="text-3xl font-bold mb-8 text-indigo-900">Language Milestone Timeline</h3>
+        <div className="flex justify-between items-start relative">
+          <div className="absolute top-1/2 left-0 right-0 h-1 bg-indigo-100 -z-10" />
+          {milestones.map((m, i) => (
+            <div key={i} className="flex flex-col items-center max-w-[150px] text-center">
+              <div className="w-12 h-12 bg-white border-4 border-indigo-500 rounded-full flex items-center justify-center font-bold text-indigo-600 mb-4 shadow-lg shadow-indigo-100">
+                {m.age}
+              </div>
+              <p className="text-sm font-semibold text-slate-700">{m.skill}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
